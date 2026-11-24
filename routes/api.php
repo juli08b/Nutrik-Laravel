@@ -28,7 +28,6 @@ Route::prefix('v1')->name('v1.')->group(function () {
         Route::post('login', [AuthController::class, 'apiLogin'])->name('login');
         Route::post('usuarios/login', [UsuarioSistemaController::class, 'login'])->name('usuarios.login');
         Route::post('usuarios/verificar', [UsuarioSistemaController::class, 'verificar'])->name('usuarios.verificar');
-        Route::post('usuarios/restablecer', [UsuarioSistemaController::class, 'restablecer'])->name('usuarios.restablecer');
     });
 
     // Registro de usuarios nuevos (público)
@@ -46,22 +45,23 @@ Route::prefix('v1')->name('v1.')->group(function () {
         // Sesión
         Route::post('logout', [AuthController::class, 'apiLogout'])->name('logout');
         Route::get('user', [AuthController::class, 'apiUser'])->name('user');
+        Route::post('usuarios/restablecer', [UsuarioSistemaController::class, 'restablecer'])->name('usuarios.restablecer');
 
-        // Usuarios (el registro público ya está arriba)
-        Route::apiResource('usuarios', UsuarioSistemaController::class)->except(['store']);
+        // Perfil propio / usuarios (clientes pueden ver/editar su cuenta; admin gestiona todas)
+        Route::get('usuarios', [UsuarioSistemaController::class, 'index'])->middleware('admin')->name('usuarios.index');
+        Route::get('usuarios/{id}', [UsuarioSistemaController::class, 'show'])->name('usuarios.show');
+        Route::match(['put', 'patch'], 'usuarios/{id}', [UsuarioSistemaController::class, 'update'])->name('usuarios.update');
+        Route::delete('usuarios/{id}', [UsuarioSistemaController::class, 'destroy'])->middleware('admin')->name('usuarios.destroy');
 
-        // Escritura del catálogo (ideal: restringir a rol administrador)
-        Route::apiResource('categorias', CategoriaController::class)->except(['index', 'show']);
+        // Productos: cliente autenticado puede comprar y vender (crear/gestionar productos).
         Route::apiResource('productos', ProductoController::class)->except(['index', 'show']);
-        Route::apiResource('descuentos', DescuentoController::class)->except(['index', 'show']);
-        Route::get('contactos', [ContactoController::class, 'index'])->name('contactos.index');
 
-        // Compras
+        // Compras (cliente autenticado)
         Route::apiResource('carrito', CarritoCompraController::class);
         Route::apiResource('pedidos', PedidoController::class);
         Route::apiResource('detalle-compras', DetalleCompraController::class);
 
-        // Gamificación (cliente)
+        // Gamificación (cliente autenticado)
         Route::prefix('gamificacion/{idUsuario}')
             ->whereNumber('idUsuario')
             ->name('gamificacion.')
@@ -78,5 +78,12 @@ Route::prefix('v1')->name('v1.')->group(function () {
                 Route::get('racha', 'racha')->name('racha');
                 Route::get('perfil', 'perfilIntegrado')->name('perfil');
             });
+
+        // ── Solo administrador ──
+        Route::middleware('admin')->group(function () {
+            Route::apiResource('categorias', CategoriaController::class)->except(['index', 'show']);
+            Route::apiResource('descuentos', DescuentoController::class)->except(['index', 'show']);
+            Route::get('contactos', [ContactoController::class, 'index'])->name('contactos.index');
+        });
     });
 });

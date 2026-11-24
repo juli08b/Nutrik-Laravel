@@ -23,10 +23,26 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Usuario para el login de la API (POST /api/login)
+        // Usuario administrador para la API (POST /api/v1/login).
+        // Las credenciales se toman de config/admin.php, que lee el entorno;
+        // no hay contraseñas por defecto en el código.
+        $adminEmail = (string) config('admin.email');
+        $adminPassword = (string) config('admin.password');
+        $adminName = (string) config('admin.name');
+
+        if ($adminEmail === '' || $adminPassword === '' || strlen($adminPassword) < 12) {
+            throw new \RuntimeException(
+                'Define ADMIN_EMAIL y ADMIN_PASSWORD (mínimo 12 caracteres) en tu .env antes de ejecutar db:seed.'
+            );
+        }
+
         User::updateOrCreate(
-            ['email' => 'admin@nutrik.test'],
-            ['name' => 'Admin Nutrik', 'password' => Hash::make('password')],
+            ['email' => $adminEmail],
+            [
+                'name' => $adminName,
+                'password' => Hash::make($adminPassword),
+                'role' => 'admin',
+            ],
         );
 
         // ── Datos demo de Nutrik ──

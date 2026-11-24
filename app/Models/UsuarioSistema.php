@@ -66,4 +66,13 @@ class UsuarioSistema extends Model
     {
         return $this->hasMany(CarritoCompra::class, 'Id_usuario', 'Id_usuario');
     }
+
+    public function isAdmin(): bool
+    {
+        return in_array(
+            strtolower((string) $this->Tipo_usuario),
+            ['admin', 'administrador'],
+            true
+        );
+    }
 }

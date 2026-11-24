@@ -33,7 +33,7 @@ class AuthController extends Controller
             'message' => 'Token generado correctamente.',
             'data' => [
                 'token' => $user->createToken('api')->plainTextToken,
-                'user' => $user->only(['id', 'name', 'email']),
+                'user' => $user->only(['id', 'name', 'email', 'role']),
             ],
         ], 200);
     }

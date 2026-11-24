@@ -18,20 +18,23 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        $middleware->prependToGroup('v1', ForceJsonResponse::class);
+        $middleware->appendToGroup('api', ForceJsonResponse::class);
+        $middleware->alias([
+            'admin' => \App\Http\Middleware\EnsureAdmin::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->shouldRenderJsonWhen(
-            fn (Request $request) => $request->is('v1/*') || $request->expectsJson(),
+            fn (Request $request) => $request->is('api/*') || $request->expectsJson(),
         );
 
         /*
-         * Los errores de /v1 se devuelven como JSON limpio, sin el "trace"
+         * Los errores de la API se devuelven como JSON limpio, sin el "trace"
          * de Laravel: la respuesta siempre es {"message": "..."}.
          * Los errores de validación conservan su campo "errors".
          */
         $exceptions->render(function (Throwable $e, Request $request) {
-            if (! $request->is('v1/*') || $e instanceof ValidationException) {
+            if (! $request->is('api/*') || $e instanceof ValidationException) {
                 return null;
             }
 
