@@ -10,34 +10,33 @@ class Producto extends Model
     use HasFactory;
 
     protected $table = 'productos';
-
-    protected $primaryKey = 'Id_producto';
+    protected $primaryKey = 'id_producto';
 
     protected $fillable = [
-        'Nombre_producto',
-        'Precio',
-        'Id_categoria',
-        'Descripcion',
-        'Stock',
-        'Imagen',
-        'Estado',
-        'Vendedor',
+        'nombre_producto',
+        'precio',
+        'id_categoria',
+        'descripcion',
+        'stock',
+        'imagen',
+        'estado',
+        'vendedor',
     ];
 
     protected $casts = [
-        'Precio' => 'float',
-        'Stock' => 'integer',
+        'precio' => 'float',
+        'stock'  => 'integer',
     ];
 
-    // Relación: Un producto pertenece a una categoría
+    // Pertenece a una categoría
     public function categoria()
     {
-        return $this->belongsTo(Categoria::class, 'Id_categoria', 'Id_categoria');
+        return $this->belongsTo(Categoria::class, 'id_categoria', 'id_categoria');
     }
 
-    // Relación: Un producto puede estar en muchos detalles de compra
-    public function detalleCompras()
+    // Un producto puede estar en muchos detalles de compra
+    public function detallesCompras()
     {
-        return $this->hasMany(DetalleCompra::class, 'Id_producto', 'Id_producto');
+        return $this->hasMany(DetalleCompra::class, 'id_producto', 'id_producto');
     }
 }

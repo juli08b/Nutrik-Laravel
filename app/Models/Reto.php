@@ -2,30 +2,32 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Reto extends Model
 {
-    protected $table = 'retos';
+    use HasFactory;
 
-    protected $primaryKey = 'Id_reto';
+    protected $table = 'retos';
+    protected $primaryKey = 'id_reto';
 
     protected $fillable = [
-        'Nombre',
-        'Descripcion',
-        'Categoria',
-        'Icono',
-        'Puntos',
-        'Activo',
+        'titulo',
+        'descripcion',
+        'categoria',
+        'icono',
+        'puntos',
+        'activo',
     ];
 
     protected $casts = [
-        'Puntos' => 'integer',
-        'Activo' => 'boolean',
+        'puntos' => 'integer',
+        'activo' => 'boolean',
     ];
 
     public function usuarioRetos()
     {
-        return $this->hasMany(UsuarioReto::class, 'Id_reto', 'Id_reto');
+        return $this->hasMany(UsuarioReto::class, 'id_reto', 'id_reto');
     }
 }

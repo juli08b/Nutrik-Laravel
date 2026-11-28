@@ -10,19 +10,24 @@ class Descuento extends Model
     use HasFactory;
 
     protected $table = 'descuentos';
-
-    protected $primaryKey = 'Id_descuento';
+    protected $primaryKey = 'id_descuento';
 
     protected $fillable = [
-        'Valor_descuento',
-        'Fecha_inicio',
-        'Fecha_fin',
-        'Id_usuario',
+        'valor_descuento',
+        'fecha_inicio',
+        'fecha_fin',
+        'id_usuario',
     ];
 
-    // Relación: Un descuento pertenece a un usuario
+    protected $casts = [
+        'valor_descuento' => 'float',
+        'fecha_inicio'    => 'date',
+        'fecha_fin'       => 'date',
+    ];
+
+    // Un descuento pertenece a un usuario
     public function usuario()
     {
-        return $this->belongsTo(UsuarioSistema::class, 'Id_usuario', 'Id_usuario');
+        return $this->belongsTo(UsuarioSistema::class, 'id_usuario', 'id_usuario');
     }
 }

@@ -7,56 +7,73 @@ use Illuminate\Http\Request;
 
 class CategoriaController extends Controller
 {
+    // Listo todas las categorías registradas
     public function index()
     {
-        return response()->json(Categoria::all(), 200);
+        $categorias = Categoria::orderBy('id_categoria', 'desc')->get();
+        return response()->json(['data' => $categorias], 200);
     }
 
+    // Registro una nueva categoría
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'Nombre_categoria' => 'required|string|max:50',
-            'Descripccion' => 'nullable|string|max:400',
-            'Tipo_producto' => 'required|string|max:50',
+        $datos = $request->validate([
+            'nombre_categoria' => 'required|string|max:50',
+            'descripcion'      => 'nullable|string',
+            'tipo_producto'    => 'required|string|max:50',
         ]);
 
-        $categoria = Categoria::create($validated);
+        $categoria = Categoria::create($datos);
 
-        return response()->json(['message' => 'Categoría creada con éxito', 'data' => $categoria], 201);
+        return response()->json([
+            'message' => 'Categoría creada correctamente',
+            'data'    => $categoria,
+        ], 201);
     }
 
+    // Consulto una categoría junto con sus productos asociados
     public function show($id)
     {
-        $categoria = Categoria::where('Id_categoria', $id)->with('productos')->first();
-        if (! $categoria) {
+        $categoria = Categoria::with('productos')
+            ->where('id_categoria', $id)
+            ->first();
+
+        if (!$categoria) {
             return response()->json(['message' => 'Categoría no encontrada'], 404);
         }
 
-        return response()->json($categoria, 200);
+        return response()->json(['data' => $categoria], 200);
     }
 
+    // Actualizo una categoría existente
     public function update(Request $request, $id)
     {
-        $categoria = Categoria::where('Id_categoria', $id)->first();
-        if (! $categoria) {
+        $categoria = Categoria::where('id_categoria', $id)->first();
+
+        if (!$categoria) {
             return response()->json(['message' => 'Categoría no encontrada'], 404);
         }
 
-        $validated = $request->validate([
-            'Nombre_categoria' => 'sometimes|required|string|max:50',
-            'Descripccion' => 'nullable|string|max:400',
-            'Tipo_producto' => 'sometimes|required|string|max:50',
+        $datos = $request->validate([
+            'nombre_categoria' => 'sometimes|required|string|max:50',
+            'descripcion'      => 'nullable|string',
+            'tipo_producto'    => 'sometimes|required|string|max:50',
         ]);
 
-        $categoria->update($validated);
+        $categoria->update($datos);
 
-        return response()->json(['message' => 'Categoría actualizada con éxito', 'data' => $categoria], 200);
+        return response()->json([
+            'message' => 'Categoría actualizada correctamente',
+            'data'    => $categoria,
+        ], 200);
     }
 
+    // Elimino una categoría
     public function destroy($id)
     {
-        $categoria = Categoria::where('Id_categoria', $id)->first();
-        if (! $categoria) {
+        $categoria = Categoria::where('id_categoria', $id)->first();
+
+        if (!$categoria) {
             return response()->json(['message' => 'Categoría no encontrada'], 404);
         }
 

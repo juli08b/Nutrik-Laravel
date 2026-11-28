@@ -2,28 +2,31 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Logro extends Model
 {
-    protected $table = 'logros';
+    use HasFactory;
 
-    protected $primaryKey = 'Id_logro';
+    protected $table = 'logros';
+    protected $primaryKey = 'id_logro';
 
     protected $fillable = [
-        'Nombre',
-        'Descripcion',
-        'Icono',
-        'Condicion',
-        'Meta',
+        'nombre',
+        'descripcion',
+        'icono',
+        'tipo',
+        'condicion',
+        'meta',
     ];
 
     protected $casts = [
-        'Meta' => 'integer',
+        'meta' => 'integer',
     ];
 
-    public function usuarioLogros()
+    public function usuarios()
     {
-        return $this->hasMany(UsuarioLogro::class, 'Id_logro', 'Id_logro');
+        return $this->hasMany(UsuarioLogro::class, 'id_logro', 'id_logro');
     }
 }

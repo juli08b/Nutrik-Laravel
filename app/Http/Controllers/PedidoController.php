@@ -7,70 +7,92 @@ use Illuminate\Http\Request;
 
 class PedidoController extends Controller
 {
+    // Listo todos los pedidos con su usuario y detalles de compra
     public function index()
     {
-        return response()->json(Pedido::with(['usuario', 'detalleCompras'])->get(), 200);
+        $pedidos = Pedido::with(['usuario', 'detallesCompra'])
+            ->orderBy('id_pedido', 'desc')
+            ->get();
+
+        return response()->json(['data' => $pedidos], 200);
     }
 
+    // Registro un nuevo pedido
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'Estado' => 'required|string|max:50',
-            'Fecha_salida' => 'required|date',
-            'Fecha_Llegada' => 'required|date|after_or_equal:Fecha_salida',
-            'Metodo_pago' => 'required|string|max:50',
-            'Subtotal' => 'required|numeric|min:0',
-            'Costo_envio' => 'required|numeric|min:0',
-            'Total_pedido' => 'required|numeric|min:0',
-            'Direccion_envio' => 'required|string|max:255',
-            'Ciudad_envio' => 'required|string|max:100',
-            'Id_usuario' => 'required|exists:usuarios_sistemas,Id_usuario',
+        $datos = $request->validate([
+            'estado'          => 'required|string|max:50',
+            'fecha_salida'    => 'required|date',
+            'fecha_llegada'   => 'required|date|after_or_equal:fecha_salida',
+            'metodo_pago'     => 'required|string|max:30',
+            'subtotal'        => 'required|numeric|min:0',
+            'costo_envio'     => 'required|numeric|min:0',
+            'total'           => 'required|numeric|min:0',
+            'direccion_envio' => 'required|string|max:255',
+            'ciudad_envio'    => 'required|string|max:100',
+            'id_usuario'      => 'required|exists:usuarios_sistemas,id_usuario',
         ]);
 
-        $pedido = Pedido::create($validated);
+        $pedido = Pedido::create($datos);
+        $pedido->load(['usuario', 'detallesCompra']);
 
-        return response()->json(['message' => 'Pedido creado con éxito', 'data' => $pedido], 201);
+        return response()->json([
+            'message' => 'Pedido creado correctamente',
+            'data'    => $pedido,
+        ], 201);
     }
 
+    // Consulto un pedido específico por id_pedido
     public function show($id)
     {
-        $pedido = Pedido::where('Id_pedido', $id)->with(['usuario', 'detalleCompras'])->first();
-        if (! $pedido) {
+        $pedido = Pedido::with(['usuario', 'detallesCompra'])
+            ->where('id_pedido', $id)
+            ->first();
+
+        if (!$pedido) {
             return response()->json(['message' => 'Pedido no encontrado'], 404);
         }
 
-        return response()->json($pedido, 200);
+        return response()->json(['data' => $pedido], 200);
     }
 
+    // Actualizo un pedido existente
     public function update(Request $request, $id)
     {
-        $pedido = Pedido::where('Id_pedido', $id)->first();
-        if (! $pedido) {
+        $pedido = Pedido::where('id_pedido', $id)->first();
+
+        if (!$pedido) {
             return response()->json(['message' => 'Pedido no encontrado'], 404);
         }
 
-        $validated = $request->validate([
-            'Estado' => 'sometimes|required|string|max:50',
-            'Fecha_salida' => 'sometimes|required|date',
-            'Fecha_Llegada' => 'sometimes|required|date|after_or_equal:Fecha_salida',
-            'Metodo_pago' => 'sometimes|required|string|max:50',
-            'Subtotal' => 'sometimes|required|numeric|min:0',
-            'Costo_envio' => 'sometimes|required|numeric|min:0',
-            'Total_pedido' => 'sometimes|required|numeric|min:0',
-            'Direccion_envio' => 'sometimes|required|string|max:255',
-            'Ciudad_envio' => 'sometimes|required|string|max:100',
-            'Id_usuario' => 'sometimes|required|exists:usuarios_sistemas,Id_usuario',
+        $datos = $request->validate([
+            'estado'          => 'sometimes|required|string|max:50',
+            'fecha_salida'    => 'sometimes|required|date',
+            'fecha_llegada'   => 'sometimes|required|date|after_or_equal:fecha_salida',
+            'metodo_pago'     => 'sometimes|required|string|max:30',
+            'subtotal'        => 'sometimes|required|numeric|min:0',
+            'costo_envio'     => 'sometimes|required|numeric|min:0',
+            'total'           => 'sometimes|required|numeric|min:0',
+            'direccion_envio' => 'sometimes|required|string|max:255',
+            'ciudad_envio'    => 'sometimes|required|string|max:100',
+            'id_usuario'      => 'sometimes|required|exists:usuarios_sistemas,id_usuario',
         ]);
 
-        $pedido->update($validated);
+        $pedido->update($datos);
+        $pedido->load(['usuario', 'detallesCompra']);
 
-        return response()->json(['message' => 'Pedido actualizado con éxito', 'data' => $pedido], 200);
+        return response()->json([
+            'message' => 'Pedido actualizado correctamente',
+            'data'    => $pedido,
+        ], 200);
     }
 
+    // Elimino un pedido
     public function destroy($id)
     {
-        $pedido = Pedido::where('Id_pedido', $id)->first();
-        if (! $pedido) {
+        $pedido = Pedido::where('id_pedido', $id)->first();
+
+        if (!$pedido) {
             return response()->json(['message' => 'Pedido no encontrado'], 404);
         }
 

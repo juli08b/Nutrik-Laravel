@@ -10,22 +10,31 @@ class CarritoCompra extends Model
     use HasFactory;
 
     protected $table = 'carrito_compras';
-
-    protected $primaryKey = 'Id_carrite';
+    protected $primaryKey = 'id_carrito';
 
     protected $fillable = [
-        'Id_producto',
-        'Nombre_producto',
-        'Precio_unitario',
-        'Imagen',
-        'Cantidad',
-        'Total',
-        'Id_usuario',
+        'id_producto',
+        'nombre_producto',
+        'precio_unitario',
+        'imagen',
+        'cantidad',
+        'id_usuario',
     ];
 
-    // Relación: Un ítem de carrito pertenece a un usuario
+    protected $casts = [
+        'precio_unitario' => 'float',
+        'cantidad'        => 'integer',
+    ];
+
+    // Un ítem de carrito pertenece a un usuario
     public function usuario()
     {
-        return $this->belongsTo(UsuarioSistema::class, 'Id_usuario', 'Id_usuario');
+        return $this->belongsTo(UsuarioSistema::class, 'id_usuario', 'id_usuario');
+    }
+
+    // Un ítem de carrito pertenece a un producto
+    public function producto()
+    {
+        return $this->belongsTo(Producto::class, 'id_producto', 'id_producto');
     }
 }

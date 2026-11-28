@@ -2,26 +2,33 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class UsuarioLogro extends Model
 {
-    protected $table = 'usuario_logros';
+    use HasFactory;
 
-    protected $primaryKey = 'Id_usuario_logro';
+    protected $table = 'usuario_logros';
+    protected $primaryKey = 'id_usuario_logro';
 
     protected $fillable = [
-        'Id_usuario',
-        'Id_logro',
+        'id_usuario',
+        'id_logro',
+        'desbloqueado_en',
+    ];
+
+    protected $casts = [
+        'desbloqueado_en' => 'datetime',
     ];
 
     public function usuario()
     {
-        return $this->belongsTo(UsuarioSistema::class, 'Id_usuario', 'Id_usuario');
+        return $this->belongsTo(UsuarioSistema::class, 'id_usuario', 'id_usuario');
     }
 
     public function logro()
     {
-        return $this->belongsTo(Logro::class, 'Id_logro', 'Id_logro');
+        return $this->belongsTo(Logro::class, 'id_logro', 'id_logro');
     }
 }

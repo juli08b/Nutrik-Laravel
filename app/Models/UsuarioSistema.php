@@ -2,77 +2,62 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Laravel\Sanctum\HasApiTokens; // <-- 1. Importa el trait
+use Laravel\Sanctum\HasApiTokens;
 
 class UsuarioSistema extends Model
 {
-    use HasApiTokens; // <-- 2. Agrégalo dentro de la clase
-
-    // Si tu tabla no usa los nombres de columnas estándar de Laravel (id, created_at, updated_at)
-    // o tiene una llave primaria personalizada, asegúrate de declararla aquí, por ejemplo:
-    // protected $primaryKey = 'Id_usuario';
-
-    // ... el resto de tu código
+    use HasApiTokens, HasFactory;
 
     protected $table = 'usuarios_sistemas';
-
-    protected $primaryKey = 'Id_usuario';
+    protected $primaryKey = 'id_usuario';
 
     protected $fillable = [
-        'Tipo_usuario',
-        'NombreUno_usuario',
-        'NombreDos_usuario',
-        'ApellidoDos_usuario',
-        'SegundoApellido',
-        'Telefono',
-        'Email',
-        'Contrasena',
-        'Direccion',
-        'Fecha_nacimiento',
-        'Genero',
-        'Estatura',
-        'Peso',
-        'Actividad',
-        'Objetivo',
-        'Alergia',
-        'Dieta',
-        'Restricciones',
-        'NombreNegocio',
-        'Nit',
-        'Ciudad',
-        'TipoProductos',
-        'DescripcionNegocio',
-        'Foto',
-        'FotoPosicion',
+        'tipo_usuario',
+        'nombre_usuario',
+        'apellidos_usuario',
+        'email',
+        'telefono',
+        'contrasena',
+        'direccion',
+        'ciudad',
+        'genero',
+        'alergias',
+        'dieta',
+        'objetivo_salud',
+        'nivel_actividad',
+        'tipo_productos',
+        'nombre_tienda',
+        'horario_atencion',
+        'razon_social',
+        'rubro',
+        'foto',
+        'fotoPosition',
     ];
 
     protected $hidden = [
-        'Contrasena',
+        'contrasena',
     ];
 
     // Relaciones
     public function pedidos()
     {
-        return $this->hasMany(Pedido::class, 'Id_usuario', 'Id_usuario');
+        return $this->hasMany(Pedido::class, 'id_usuario', 'id_usuario');
     }
 
     public function descuentos()
     {
-        return $this->hasMany(Descuento::class, 'Id_usuario', 'Id_usuario');
+        return $this->hasMany(Descuento::class, 'id_usuario', 'id_usuario');
     }
 
-    public function carrito()
+    public function carritos()
     {
-        return $this->hasMany(CarritoCompra::class, 'Id_usuario', 'Id_usuario');
+        return $this->hasMany(CarritoCompra::class, 'id_usuario', 'id_usuario');
     }
 
-    public function isAdmin(): bool
+    public function esAdmin(): bool
     {
-        return in_array(
-            strtolower((string) $this->Tipo_usuario),
-            ['admin', 'administrador'],
-            true
-        );
+        return in_array(strtolower((string) $this->tipo_usuario), ['admin', 'administrador'], true);
     }
 }

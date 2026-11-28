@@ -7,58 +7,80 @@ use Illuminate\Http\Request;
 
 class DescuentoController extends Controller
 {
+    // Listo todos los descuentos con el usuario asociado
     public function index()
     {
-        return response()->json(Descuento::with('usuario')->get(), 200);
+        $descuentos = Descuento::with('usuario')
+            ->orderBy('id_descuento', 'desc')
+            ->get();
+
+        return response()->json(['data' => $descuentos], 200);
     }
 
+    // Registro un nuevo descuento
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'Valor_descuento' => 'required|numeric',
-            'Fecha_inicio' => 'required|date',
-            'Fecha_fin' => 'required|date|after_or_equal:Fecha_inicio',
-            'Id_usuario' => 'required|exists:usuarios_sistemas,Id_usuario',
+        $datos = $request->validate([
+            'valor_descuento' => 'required|numeric|min:0',
+            'fecha_inicio'    => 'required|date',
+            'fecha_fin'       => 'required|date|after_or_equal:fecha_inicio',
+            'id_usuario'      => 'required|exists:usuarios_sistemas,id_usuario',
         ]);
 
-        $descuento = Descuento::create($validated);
+        $descuento = Descuento::create($datos);
+        $descuento->load('usuario');
 
-        return response()->json(['message' => 'Descuento creado con éxito', 'data' => $descuento], 201);
+        return response()->json([
+            'message' => 'Descuento creado correctamente',
+            'data'    => $descuento,
+        ], 201);
     }
 
+    // Consulto un descuento específico por id_descuento
     public function show($id)
     {
-        $descuento = Descuento::where('Id_descuento', $id)->with('usuario')->first();
-        if (! $descuento) {
+        $descuento = Descuento::with('usuario')
+            ->where('id_descuento', $id)
+            ->first();
+
+        if (!$descuento) {
             return response()->json(['message' => 'Descuento no encontrado'], 404);
         }
 
-        return response()->json($descuento, 200);
+        return response()->json(['data' => $descuento], 200);
     }
 
+    // Actualizo un descuento existente
     public function update(Request $request, $id)
     {
-        $descuento = Descuento::where('Id_descuento', $id)->first();
-        if (! $descuento) {
+        $descuento = Descuento::where('id_descuento', $id)->first();
+
+        if (!$descuento) {
             return response()->json(['message' => 'Descuento no encontrado'], 404);
         }
 
-        $validated = $request->validate([
-            'Valor_descuento' => 'sometimes|required|numeric',
-            'Fecha_inicio' => 'sometimes|required|date',
-            'Fecha_fin' => 'sometimes|required|date|after_or_equal:Fecha_inicio',
-            'Id_usuario' => 'sometimes|required|exists:usuarios_sistemas,Id_usuario',
+        $datos = $request->validate([
+            'valor_descuento' => 'sometimes|required|numeric|min:0',
+            'fecha_inicio'    => 'sometimes|required|date',
+            'fecha_fin'       => 'sometimes|required|date|after_or_equal:fecha_inicio',
+            'id_usuario'      => 'sometimes|required|exists:usuarios_sistemas,id_usuario',
         ]);
 
-        $descuento->update($validated);
+        $descuento->update($datos);
+        $descuento->load('usuario');
 
-        return response()->json(['message' => 'Descuento actualizado con éxito', 'data' => $descuento], 200);
+        return response()->json([
+            'message' => 'Descuento actualizado correctamente',
+            'data'    => $descuento,
+        ], 200);
     }
 
+    // Elimino un descuento
     public function destroy($id)
     {
-        $descuento = Descuento::where('Id_descuento', $id)->first();
-        if (! $descuento) {
+        $descuento = Descuento::where('id_descuento', $id)->first();
+
+        if (!$descuento) {
             return response()->json(['message' => 'Descuento no encontrado'], 404);
         }
 

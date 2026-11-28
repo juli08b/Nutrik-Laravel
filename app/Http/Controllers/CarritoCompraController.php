@@ -7,65 +7,84 @@ use Illuminate\Http\Request;
 
 class CarritoCompraController extends Controller
 {
+    // Listo todos los registros del carrito con su usuario y producto
     public function index()
     {
-        return response()->json(CarritoCompra::with('usuario')->get(), 200);
+        $carritos = CarritoCompra::with(['usuario', 'producto'])
+            ->orderBy('id_carrito', 'desc')
+            ->get();
+
+        return response()->json(['data' => $carritos], 200);
     }
 
+    // Agrego un producto al carrito de compras
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'Id_producto' => 'nullable|integer|exists:productos,Id_producto',
-            'Nombre_producto' => 'nullable|string|max:100',
-            'Precio_unitario' => 'nullable|numeric|min:0',
-            'Imagen' => 'nullable|string|max:500',
-            'Cantidad' => 'required|integer|min:1',
-            'Total' => 'required|numeric|min:0',
-            'Id_usuario' => 'required|exists:usuarios_sistemas,Id_usuario',
+        $datos = $request->validate([
+            'id_producto'     => 'required|integer|exists:productos,id_producto',
+            'nombre_producto' => 'nullable|string|max:100',
+            'precio_unitario' => 'nullable|numeric|min:0',
+            'imagen'          => 'nullable|string|max:500',
+            'cantidad'        => 'required|integer|min:1',
+            'id_usuario'      => 'required|exists:usuarios_sistemas,id_usuario',
         ]);
 
-        $carrito = CarritoCompra::create($validated);
+        $carrito = CarritoCompra::create($datos);
+        $carrito->load(['usuario', 'producto']);
 
-        return response()->json(['message' => 'Ítem agregado al carrito con éxito', 'data' => $carrito], 201);
+        return response()->json([
+            'message' => 'Ítem agregado al carrito correctamente',
+            'data'    => $carrito,
+        ], 201);
     }
 
+    // Consulto un registro específico del carrito por id_carrito
     public function show($id)
     {
-        // Nota: Respetando tu llave primaria Id_carrite del diagrama
-        $carrito = CarritoCompra::where('Id_carrite', $id)->with('usuario')->first();
-        if (! $carrito) {
+        $carrito = CarritoCompra::with(['usuario', 'producto'])
+            ->where('id_carrito', $id)
+            ->first();
+
+        if (!$carrito) {
             return response()->json(['message' => 'Registro de carrito no encontrado'], 404);
         }
 
-        return response()->json($carrito, 200);
+        return response()->json(['data' => $carrito], 200);
     }
 
+    // Actualizo un registro del carrito
     public function update(Request $request, $id)
     {
-        $carrito = CarritoCompra::where('Id_carrite', $id)->first();
-        if (! $carrito) {
+        $carrito = CarritoCompra::where('id_carrito', $id)->first();
+
+        if (!$carrito) {
             return response()->json(['message' => 'Registro de carrito no encontrado'], 404);
         }
 
-        $validated = $request->validate([
-            'Id_producto' => 'nullable|integer|exists:productos,Id_producto',
-            'Nombre_producto' => 'nullable|string|max:100',
-            'Precio_unitario' => 'nullable|numeric|min:0',
-            'Imagen' => 'nullable|string|max:500',
-            'Cantidad' => 'sometimes|required|integer|min:1',
-            'Total' => 'sometimes|required|numeric|min:0',
-            'Id_usuario' => 'sometimes|required|exists:usuarios_sistemas,Id_usuario',
+        $datos = $request->validate([
+            'id_producto'     => 'sometimes|required|integer|exists:productos,id_producto',
+            'nombre_producto' => 'nullable|string|max:100',
+            'precio_unitario' => 'nullable|numeric|min:0',
+            'imagen'          => 'nullable|string|max:500',
+            'cantidad'        => 'sometimes|required|integer|min:1',
+            'id_usuario'      => 'sometimes|required|exists:usuarios_sistemas,id_usuario',
         ]);
 
-        $carrito->update($validated);
+        $carrito->update($datos);
+        $carrito->load(['usuario', 'producto']);
 
-        return response()->json(['message' => 'Carrito actualizado con éxito', 'data' => $carrito], 200);
+        return response()->json([
+            'message' => 'Carrito actualizado correctamente',
+            'data'    => $carrito,
+        ], 200);
     }
 
+    // Elimino un ítem del carrito
     public function destroy($id)
     {
-        $carrito = CarritoCompra::where('Id_carrite', $id)->first();
-        if (! $carrito) {
+        $carrito = CarritoCompra::where('id_carrito', $id)->first();
+
+        if (!$carrito) {
             return response()->json(['message' => 'Registro de carrito no encontrado'], 404);
         }
 

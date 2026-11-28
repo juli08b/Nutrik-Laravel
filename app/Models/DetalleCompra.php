@@ -9,27 +9,32 @@ class DetalleCompra extends Model
 {
     use HasFactory;
 
-    protected $table = 'detalle_compras';
-
-    protected $primaryKey = 'Id_Detalle';
+    protected $table = 'detalles_compras';
+    protected $primaryKey = 'id_detalle';
 
     protected $fillable = [
-        'Id_pedido',
-        'Id_producto',
-        'Precio_unitario',
-        'Subtotal',
-        'Cantidad',
+        'precio_unitario',
+        'subtotal',
+        'cantidad',
+        'id_pedido',
+        'id_producto',
     ];
 
-    // Relación: Pertenece a un pedido
+    protected $casts = [
+        'precio_unitario' => 'float',
+        'subtotal'        => 'float',
+        'cantidad'        => 'integer',
+    ];
+
+    // Pertenece a un pedido
     public function pedido()
     {
-        return $this->belongsTo(Pedido::class, 'Id_pedido', 'Id_pedido');
+        return $this->belongsTo(Pedido::class, 'id_pedido', 'id_pedido');
     }
 
-    // Relación: Pertenece a un producto
+    // Pertenece a un producto
     public function producto()
     {
-        return $this->belongsTo(Producto::class, 'Id_producto', 'Id_producto');
+        return $this->belongsTo(Producto::class, 'id_producto', 'id_producto');
     }
 }

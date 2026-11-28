@@ -2,34 +2,36 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Canje extends Model
 {
-    protected $table = 'canjes';
+    use HasFactory;
 
-    protected $primaryKey = 'Id_canje';
+    protected $table = 'canjes';
+    protected $primaryKey = 'id_canje';
 
     protected $fillable = [
-        'Id_usuario',
-        'Id_recompensa',
-        'Puntos_usados',
-        'Estado',
-        'Fecha',
+        'id_usuario',
+        'id_recompensa',
+        'puntos_usados',
+        'estado',
+        'fecha',
     ];
 
     protected $casts = [
-        'Puntos_usados' => 'integer',
-        'Fecha' => 'date',
+        'puntos_usados' => 'integer',
+        'fecha'         => 'date',
     ];
 
     public function usuario()
     {
-        return $this->belongsTo(UsuarioSistema::class, 'Id_usuario', 'Id_usuario');
+        return $this->belongsTo(UsuarioSistema::class, 'id_usuario', 'id_usuario');
     }
 
     public function recompensa()
     {
-        return $this->belongsTo(Recompensa::class, 'Id_recompensa', 'Id_recompensa');
+        return $this->belongsTo(Recompensa::class, 'id_recompensa', 'id_recompensa');
     }
 }
