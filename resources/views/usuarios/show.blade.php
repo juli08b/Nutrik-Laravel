@@ -1,13 +1,13 @@
-@extends('layouts.app')
+ @extends('layouts.app')
 
-@section('title', 'Detalle de usuario')
+ @section('title', 'Detalle de usuario')
 
-@section('content')
-    <div class="row justify-content-center">
-        <div class="col-lg-8">
-            <h1 class="h4 mb-3">Usuario #{{ data_get($usuario, 'Id_usuario') }}</h1>
-            <div class="card card-simple p-4">
-                <dl class="row mb-0">
+ @section('content')
+     <div class="row justify-content-center">
+         <div class="col-lg-8">
+             <h1 class="h4 mb-3">Usuario #{{ data_get($usuario, 'Id_usuario') }}</h1>
+             <div class="card card-simple p-4">
+                 <dl class="row mb-0">
                     <dt class="col-sm-4">Tipo</dt><dd class="col-sm-8">{{ data_get($usuario, 'Tipo_usuario') }}</dd>
                     <dt class="col-sm-4">Primer nombre</dt><dd class="col-sm-8">{{ data_get($usuario, 'NombreUno_usuario') }}</dd>
                     <dt class="col-sm-4">Segundo nombre</dt><dd class="col-sm-8">{{ data_get($usuario, 'NombreDos_usuario') ?: '—' }}</dd>

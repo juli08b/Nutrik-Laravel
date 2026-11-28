@@ -1,11 +1,11 @@
-@extends('layouts.app')
+ @extends('layouts.app')
 
-@section('title', 'Descuentos')
+ @section('title', 'Descuentos')
 
-@section('content')
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h1 class="h4 mb-0">Descuentos <span class="text-muted">({{ $descuentos->count() }})</span></h1>
-        <a href="{{ route('descuentos.create') }}" class="btn btn-success">+ Nuevo descuento</a>
+ @section('content')
+     <div class="d-flex justify-content-between align-items-center mb-3">
+         <h1 class="h4 mb-0">Descuentos <span class="text-muted">({{ $descuentos->count() }})</span></h1>
+         <a href="{{ route('descuentos.create') }}" class="btn btn-success">+ Nuevo descuento</a>
     </div>
 
     <div class="card card-simple">

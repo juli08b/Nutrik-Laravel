@@ -1,14 +1,14 @@
-@extends('layouts.app')
+ @extends('layouts.app')
 
-@section('title', 'Panel principal')
+ @section('title', 'Panel principal')
 
-@section('content')
-    <div class="mb-4">
-        <h1 class="h3 mb-2">Panel de Administración - Nutrik</h1>
-        <p class="text-muted mb-0">Selecciona la tabla que deseas gestionar:</p>
-    </div>
+ @section('content')
+     <div class="mb-4">
+         <h1 class="h3 mb-2">Panel de Administración - Nutrik</h1>
+         <p class="text-muted mb-0">Selecciona la tabla que deseas gestionar:</p>
+     </div>
 
-    <div class="row row-cols-1 row-cols-md-2 g-3">
+     <div class="row row-cols-1 row-cols-md-2 g-3">
         <div class="col">
             <a href="{{ route('usuarios.index') }}" class="card card-simple h-100 text-decoration-none border-start border-primary border-4">
                 <div class="card-body">

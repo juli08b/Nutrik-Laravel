@@ -1,12 +1,12 @@
-@extends('layouts.app')
+ @extends('layouts.app')
 
-@section('title', 'Detalle de pedido')
+ @section('title', 'Detalle de pedido')
 
-@section('content')
-    <div class="row justify-content-center">
-        <div class="col-lg-9">
-            <h1 class="h4 mb-3">Pedido #{{ data_get($pedido, 'Id_pedido') }}</h1>
-            <div class="card card-simple p-4">
+ @section('content')
+     <div class="row justify-content-center">
+         <div class="col-lg-9">
+             <h1 class="h4 mb-3">Pedido #{{ data_get($pedido, 'Id_pedido') }}</h1>
+             <div class="card card-simple p-4">
                 <dl class="row mb-0">
                     <dt class="col-sm-4">Estado</dt><dd class="col-sm-8">{{ data_get($pedido, 'Estado') }}</dd>
                     <dt class="col-sm-4">Fecha salida</dt><dd class="col-sm-8">{{ data_get($pedido, 'Fecha_salida') }}</dd>

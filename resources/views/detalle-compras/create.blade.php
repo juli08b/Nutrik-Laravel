@@ -1,12 +1,12 @@
-@extends('layouts.app')
+ @extends('layouts.app')
 
-@section('title', 'Nuevo detalle de compra')
+ @section('title', 'Nuevo detalle de compra')
 
-@section('content')
-    <div class="row justify-content-center">
-        <div class="col-lg-8">
-            <h1 class="h4 mb-3">Nuevo detalle de compra</h1>
-            <div class="card card-simple p-4">
+ @section('content')
+     <div class="row justify-content-center">
+         <div class="col-lg-8">
+             <h1 class="h4 mb-3">Nuevo detalle de compra</h1>
+             <div class="card card-simple p-4">
                 <form action="{{ route('detalle-compras.store') }}" method="POST">
                     @csrf
                     <div class="row">

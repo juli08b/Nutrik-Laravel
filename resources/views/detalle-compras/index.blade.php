@@ -1,11 +1,11 @@
-@extends('layouts.app')
+ @extends('layouts.app')
 
-@section('title', 'Detalle de compras')
+ @section('title', 'Detalle de compras')
 
-@section('content')
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h1 class="h4 mb-0">Detalle de compras <span class="text-muted">({{ $detalles->count() }})</span></h1>
-        <a href="{{ route('detalle-compras.create') }}" class="btn btn-success">+ Nuevo detalle</a>
+ @section('content')
+     <div class="d-flex justify-content-between align-items-center mb-3">
+         <h1 class="h4 mb-0">Detalle de compras <span class="text-muted">({{ $detalles->count() }})</span></h1>
+         <a href="{{ route('detalle-compras.create') }}" class="btn btn-success">+ Nuevo detalle</a>
     </div>
 
     <div class="card card-simple">

@@ -1,13 +1,13 @@
-@extends('layouts.app')
+ @extends('layouts.app')
 
-@section('title', 'Nuevo pedido')
+ @section('title', 'Nuevo pedido')
 
-@section('content')
-    <div class="row justify-content-center">
-        <div class="col-lg-9">
-            <h1 class="h4 mb-3">Nuevo pedido</h1>
-            <div class="card card-simple p-4">
-                <form action="{{ route('pedidos.store') }}" method="POST">
+ @section('content')
+     <div class="row justify-content-center">
+         <div class="col-lg-9">
+             <h1 class="h4 mb-3">Nuevo pedido</h1>
+             <div class="card card-simple p-4">
+                 <form action="{{ route('pedidos.store') }}" method="POST">
                     @csrf
                     <div class="row">
                         <div class="col-md-4 mb-3">

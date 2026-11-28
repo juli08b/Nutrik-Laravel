@@ -1,20 +1,20 @@
-@extends('layouts.app')
+ @extends('layouts.app')
 
-@section('title', 'Nuevo usuario')
+ @section('title', 'Nuevo usuario')
 
-@section('content')
-    <div class="row justify-content-center">
-        <div class="col-lg-8">
-            <h1 class="h4 mb-3">Nuevo usuario</h1>
-            <div class="card card-simple p-4">
-                <form action="{{ route('usuarios.store') }}" method="POST">
-                    @csrf
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">Tipo de usuario *</label>
-                            <input type="text" name="Tipo_usuario" class="form-control" value="{{ old('Tipo_usuario') }}" maxlength="50" required>
-                        </div>
-                        <div class="col-md-6 mb-3">
+ @section('content')
+     <div class="row justify-content-center">
+         <div class="col-lg-8">
+             <h1 class="h4 mb-3">Nuevo usuario</h1>
+             <div class="card card-simple p-4">
+                 <form action="{{ route('usuarios.store') }}" method="POST">
+                     @csrf
+                     <div class="row">
+                         <div class="col-md-6 mb-3">
+                             <label class="form-label">Tipo de usuario *</label>
+                             <input type="text" name="Tipo_usuario" class="form-control" value="{{ old('Tipo_usuario') }}" maxlength="50" required>
+                         </div>
+                         <div class="col-md-6 mb-3">
                             <label class="form-label">Email *</label>
                             <input type="email" name="Email" class="form-control" value="{{ old('Email') }}" maxlength="100" required>
                         </div>

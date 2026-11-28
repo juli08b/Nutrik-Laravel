@@ -1,12 +1,12 @@
-@extends('layouts.app')
+ @extends('layouts.app')
 
-@section('title', 'Detalle de producto')
+ @section('title', 'Detalle de producto')
 
-@section('content')
-    <div class="row justify-content-center">
-        <div class="col-lg-7">
-            <h1 class="h4 mb-3">Producto #{{ data_get($producto, 'Id_producto') }}</h1>
-            <div class="card card-simple p-4">
+ @section('content')
+     <div class="row justify-content-center">
+         <div class="col-lg-7">
+             <h1 class="h4 mb-3">Producto #{{ data_get($producto, 'Id_producto') }}</h1>
+             <div class="card card-simple p-4">
                 <dl class="row mb-0">
                     <dt class="col-sm-4">Nombre</dt><dd class="col-sm-8">{{ data_get($producto, 'Nombre_producto') }}</dd>
                     <dt class="col-sm-4">Precio</dt><dd class="col-sm-8">${{ number_format((float) data_get($producto, 'Precio'), 0, ',', '.') }}</dd>

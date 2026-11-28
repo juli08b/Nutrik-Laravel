@@ -1,15 +1,15 @@
-@extends('layouts.app')
+ @extends('layouts.app')
 
-@section('title', 'Nuevo producto')
+ @section('title', 'Nuevo producto')
 
-@section('content')
-    <div class="row justify-content-center">
-        <div class="col-lg-7">
-            <h1 class="h4 mb-3">Nuevo producto</h1>
-            <div class="card card-simple p-4">
-                <form action="{{ route('productos.store') }}" method="POST">
-                    @csrf
-                    <div class="mb-3">
+ @section('content')
+     <div class="row justify-content-center">
+         <div class="col-lg-7">
+             <h1 class="h4 mb-3">Nuevo producto</h1>
+             <div class="card card-simple p-4">
+                 <form action="{{ route('productos.store') }}" method="POST">
+                     @csrf
+                     <div class="mb-3">
                         <label class="form-label">Nombre *</label>
                         <input type="text" name="Nombre_producto" class="form-control" value="{{ old('Nombre_producto') }}" maxlength="100" required>
                     </div>

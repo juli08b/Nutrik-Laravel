@@ -18,9 +18,9 @@ use Illuminate\Support\Facades\Route;
 | consultan la base de datos directamente desde sus controladores web.
 */
 
-Route::middleware(EnsureLocalEnvironment::class)->group(function () {
+ Route::middleware(EnsureLocalEnvironment::class)->group(function () {
     // Página de inicio: menú principal de administración
-    Route::view('/', 'home')->name('home');
+     Route::view('/', 'home')->name('home');
 
     // ==========================================
     // USUARIOS DEL SISTEMA
@@ -91,7 +91,7 @@ Route::middleware(EnsureLocalEnvironment::class)->group(function () {
     // ==========================================
     // DETALLE DE COMPRAS
     // ==========================================
-    Route::get('detalle-compras', [DetalleCompraController::class, 'index'])->name('detalle-compras.index');
+     Route::get('detalle-compras', [DetalleCompraController::class, 'index'])->name('detalle-compras.index');
     Route::get('detalle-compras/create', [DetalleCompraController::class, 'create'])->name('detalle-compras.create');
     Route::get('detalle-compras/{id}', [DetalleCompraController::class, 'show'])->name('detalle-compras.show');
     Route::post('detalle-compras', [DetalleCompraController::class, 'store'])->name('detalle-compras.store');

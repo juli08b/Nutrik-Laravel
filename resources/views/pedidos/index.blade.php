@@ -1,15 +1,15 @@
-@extends('layouts.app')
+ @extends('layouts.app')
 
-@section('title', 'Pedidos')
+ @section('title', 'Pedidos')
 
-@section('content')
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h1 class="h4 mb-0">Pedidos <span class="text-muted">({{ $pedidos->count() }})</span></h1>
-        <a href="{{ route('pedidos.create') }}" class="btn btn-success">+ Nuevo pedido</a>
-    </div>
+ @section('content')
+     <div class="d-flex justify-content-between align-items-center mb-3">
+         <h1 class="h4 mb-0">Pedidos <span class="text-muted">({{ $pedidos->count() }})</span></h1>
+         <a href="{{ route('pedidos.create') }}" class="btn btn-success">+ Nuevo pedido</a>
+     </div>
 
-    <div class="card card-simple">
-        <div class="table-responsive">
+     <div class="card card-simple">
+         <div class="table-responsive">
             <table class="table table-hover align-middle mb-0">
                 <thead class="table-light">
                     <tr>

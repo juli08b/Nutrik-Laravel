@@ -1,12 +1,12 @@
-@extends('layouts.app')
+ @extends('layouts.app')
 
-@section('title', 'Editar usuario')
+ @section('title', 'Editar usuario')
 
-@section('content')
-    <div class="row justify-content-center">
-        <div class="col-lg-8">
-            <h1 class="h4 mb-3">Editar usuario <span class="text-muted">#{{ data_get($usuario, 'Id_usuario') }}</span></h1>
-            <div class="card card-simple p-4">
+ @section('content')
+     <div class="row justify-content-center">
+         <div class="col-lg-8">
+             <h1 class="h4 mb-3">Editar usuario <span class="text-muted">#{{ data_get($usuario, 'Id_usuario') }}</span></h1>
+             <div class="card card-simple p-4">
                 <form action="{{ route('usuarios.update', data_get($usuario, 'Id_usuario')) }}" method="POST">
                     @csrf
                     @method('PUT')
